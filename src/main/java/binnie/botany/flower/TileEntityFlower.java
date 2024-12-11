@@ -42,6 +42,7 @@ import forestry.api.genetics.IPollinatable;
 import forestry.api.lepidopterology.IButterfly;
 import forestry.api.lepidopterology.IButterflyNursery;
 import forestry.lepidopterology.entities.EntityButterfly;
+import forestry.plugins.PluginLepidopterology;
 
 public class TileEntityFlower extends TileEntity implements IPollinatable, IButterflyNursery {
 
@@ -212,11 +213,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
             return;
         }
 
-        if (!canTolerate || light < 1.0f) {
-            flower.setWilted(true);
-        } else {
-            flower.setWilted(false);
-        }
+        flower.setWilted(!canTolerate || light < 1.0f);
 
         float chanceDispersal = 0.8f;
         chanceDispersal += 0.2f * flower.getGenome().getFertility();
@@ -301,7 +298,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
     public void updateRender(boolean update) {
         if (update && getFlower() != null && getFlower().getGenome() != null) {
             RenderInfo newInfo = new RenderInfo(getFlower(), this);
-            if (renderInfo == null || !newInfo.equals(renderInfo)) {
+            if (!newInfo.equals(renderInfo)) {
                 setRender(newInfo);
             }
         }
@@ -456,7 +453,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
         if (worldObj.rand.nextFloat() >= spawn.getGenome().getPrimary().getRarity() * 0.5f) {
             return;
         }
-        if (worldObj.countEntities(EntityButterfly.class) > 100) {
+        if (worldObj.countEntities(EntityButterfly.class) > PluginLepidopterology.spawnConstraint) {
             return;
         }
         if (!spawn.canSpawn(worldObj, x, y, z)) {
@@ -618,8 +615,7 @@ public class TileEntityFlower extends TileEntity implements IPollinatable, IButt
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof RenderInfo) {
-                RenderInfo o = (RenderInfo) obj;
+            if (obj instanceof RenderInfo o) {
                 return o.age == age && o.wilted == wilted
                         && o.flowered == flowered
                         && o.primary == primary

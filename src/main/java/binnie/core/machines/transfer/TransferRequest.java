@@ -25,8 +25,8 @@ public class TransferRequest {
     private int[] targetTanks;
     private boolean transferLiquids;
     private boolean ignoreReadOnly;
-    private List<TransferSlot> insertedSlots;
-    private List<Integer> insertedTanks;
+    private final List<TransferSlot> insertedSlots;
+    private final List<Integer> insertedTanks;
 
     public TransferRequest(ItemStack toTransfer, IInventory destination) {
         itemToTransfer = null;
@@ -180,10 +180,9 @@ public class TransferRequest {
             int space = merged.getMaxStackSize() - merged.stackSize;
             if (space > 0) {
                 if (itemstack.stackSize > space) {
-                    ItemStack itemStack = itemstack;
-                    itemStack.stackSize -= space;
+                    itemstack.stackSize -= space;
                     merged.stackSize += space;
-                } else if (itemstack.stackSize <= space) {
+                } else {
                     merged.stackSize += itemstack.stackSize;
                     itemstack = null;
                 }
@@ -201,11 +200,10 @@ public class TransferRequest {
 
     private ItemStack transferToTankUsingFluidContainer(ItemStack item, IInventory origin, ITankMachine destination,
             int tankID, boolean doAdd) {
-        if (item == null || !(item.getItem() instanceof IFluidContainerItem)) {
+        if (item == null || !(item.getItem() instanceof IFluidContainerItem fluidContainer)) {
             return item;
         }
 
-        IFluidContainerItem fluidContainer = (IFluidContainerItem) item.getItem();
         FluidStack fluid = fluidContainer.getFluid(item);
         if (fluid == null) {
             return item;
@@ -256,7 +254,12 @@ public class TransferRequest {
         FluidStack largeAmountOfLiquid = containerLiquid.copy();
         largeAmountOfLiquid.amount = tank.getCapacity();
         int amountAdded = tank.fill(largeAmountOfLiquid, false);
-        int numberOfContainersToAdd = amountAdded / containerLiquid.amount;
+        int numberOfContainersToAdd;
+        if (containerLiquid.amount > 0) {
+            numberOfContainersToAdd = amountAdded / containerLiquid.amount;
+        } else {
+            numberOfContainersToAdd = item.stackSize;
+        }
         if (numberOfContainersToAdd > item.stackSize) {
             numberOfContainersToAdd = item.stackSize;
         }
@@ -302,11 +305,10 @@ public class TransferRequest {
 
     private ItemStack transferFromTankUsingFluidContainer(ItemStack item, IInventory origin, ITankMachine destination,
             int tankID, boolean doAdd) {
-        if (item == null || !(item.getItem() instanceof IFluidContainerItem)) {
+        if (item == null || !(item.getItem() instanceof IFluidContainerItem fluidContainer)) {
             return item;
         }
 
-        IFluidContainerItem fluidContainer = (IFluidContainerItem) item.getItem();
         IFluidTank tank = destination.getTanks()[tankID];
         FluidStack fluid = tank.getFluid();
         if (fluid == null) {
@@ -358,7 +360,12 @@ public class TransferRequest {
         int maximumExtractedLiquid = item.stackSize * fluid.amount;
         FluidStack drainedLiquid = tank.drain(maximumExtractedLiquid, false);
         int amountInTank = (drainedLiquid == null) ? 0 : drainedLiquid.amount;
-        int numberOfContainersToFill = amountInTank / fluid.amount;
+        int numberOfContainersToFill;
+        if (fluid.amount > 0) {
+            numberOfContainersToFill = amountInTank / fluid.amount;
+        } else {
+            numberOfContainersToFill = item.stackSize;
+        }
         if (numberOfContainersToFill > item.stackSize) {
             numberOfContainersToFill = item.stackSize;
         }
