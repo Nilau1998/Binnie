@@ -99,7 +99,8 @@ public enum EnumHoneyComb implements IItemEnum {
     ENDERPEARL(new Color(0x349786), new Color(0x32620)),
     YELLORIUM(new Color(0x27204d), new Color(14019840)),
     CYANITE(new Color(0x27204d), new Color(0x86ed)),
-    BLUTONIUM(new Color(0x27204d), new Color(0x1b00e6));
+    BLUTONIUM(new Color(0x27204d), new Color(0x1b00e6)),
+    DIDDY(new Color(253, 185, 39), new Color(85, 37, 130));
 
     public final Map<ItemStack, Float> products;
     public final int primaryColor;

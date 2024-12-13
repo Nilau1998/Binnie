@@ -20,6 +20,7 @@ import forestry.api.core.Tabs;
 public class ItemDictionary extends Item {
 
     protected IIcon iconMaster;
+    protected IIcon iconElectronicsLump;
 
     public ItemDictionary() {
         setCreativeTab(Tabs.tabApiculture);
@@ -32,6 +33,7 @@ public class ItemDictionary extends Item {
     public void registerIcons(IIconRegister register) {
         itemIcon = ExtraBees.proxy.getIcon(register, "apiaristDatabase");
         iconMaster = ExtraBees.proxy.getIcon(register, "masterApiaristDatabase");
+        iconElectronicsLump = ExtraBees.proxy.getIcon(register, "electronicsLump");
     }
 
     @Override

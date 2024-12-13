@@ -53,7 +53,7 @@ import forestry.plugins.PluginManager;
         name = "Binnie Core",
         version = Tags.VERSION,
         useMetadata = true,
-        dependencies = "after:Forestry@[4.2,),required-after:gtnhlib@[0.0.10,)")
+        dependencies = "after:Forestry@[4.2,)after:gregtech,required-after:gtnhlib@[0.0.10,)")
 public class BinnieCore extends AbstractMod {
 
     @Mod.Instance("BinnieCore")

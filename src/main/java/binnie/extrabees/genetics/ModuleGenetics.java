@@ -34,6 +34,8 @@ public class ModuleGenetics implements IInitializable {
     public void init() {
         ExtraBeesEffect.doInit();
         ExtraBeesFlowers.doInit();
+        ExtraBeesSpeed.doInit();
+        ExtraBeesLife.doInit();
         ExtraBeeDefinition.initBees();
     }
 

@@ -43,7 +43,8 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers, IChromo
     SAPLING,
     FRUIT,
     MYSTICAL,
-    BEDROCK;
+    BEDROCK,
+    FIRE;
 
     private final boolean dominant;
 
@@ -99,6 +100,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers, IChromo
             case SAPLING -> new ItemStack[] { new ItemStack(Blocks.sapling) };
             case WOOD -> new ItemStack[] { new ItemStack(Blocks.log) };
             case BEDROCK -> new ItemStack[] { new ItemStack(Blocks.bedrock) };
+            case FIRE -> new ItemStack[] { new ItemStack(Blocks.fire) };
             default -> new ItemStack[0];
         };
     }
@@ -128,6 +130,7 @@ public enum ExtraBeesFlowers implements IFlowerProvider, IAlleleFlowers, IChromo
             case SAPLING -> block.getClass().getName().toLowerCase().contains("sapling");
             case MYSTICAL -> block == Mods.botania.block("flower");
             case BEDROCK -> block == Blocks.bedrock;
+            case FIRE -> block == Blocks.fire;
         };
     }
 

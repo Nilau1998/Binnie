@@ -1,12 +1,19 @@
 // Add your dependencies here
 
 dependencies {
-	api('com.github.GTNewHorizons:ForestryMC:4.9.16:dev')
-	implementation('com.github.GTNewHorizons:GTNHLib:0.5.20:dev')
+	api('com.github.GTNewHorizons:ForestryMC:4.9.19:dev')
+	api('com.github.GTNewHorizons:GT5-Unofficial:5.09.51.04:dev')
+	implementation('com.github.GTNewHorizons:GTNHLib:0.5.22:dev')
 
-	devOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.6.44-GTNH:dev')
+	devOnlyNonPublishable('com.github.GTNewHorizons:NotEnoughItems:2.6.51-GTNH:dev')
 
 	compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.39:api')
 	compileOnly('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
 	compileOnly("curse.maven:extrabiomesxl-60041:2273301")
+
+	runtimeOnlyNonPublishable('com.github.GTNewHorizons:ForestryMC:4.9.19:dev')
+	runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
+	runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
+	runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.8.5-GTNH:dev')
+	runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.8.22:dev')
 }

@@ -19,6 +19,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -31,14 +32,12 @@ import binnie.core.util.I18N;
 import binnie.extrabees.ExtraBees;
 import binnie.extrabees.genetics.ExtraBeesFlowers;
 import cofh.api.energy.IEnergyReceiver;
-import forestry.api.apiculture.BeeManager;
-import forestry.api.apiculture.IAlleleBeeEffect;
-import forestry.api.apiculture.IArmorApiarist;
-import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.*;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.core.proxy.Proxies;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
 public enum ExtraBeesEffect implements IAlleleBeeEffect {
 
@@ -66,7 +65,8 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
     BONEMEAL_SAPLING,
     BONEMEAL_FRUIT,
     BONEMEAL_MUSHROOM,
-    POWER;
+    POWER,
+    MACHINE_BOOSTER;
 
     private static final List<Birthday> birthdays = new ArrayList<>();
 
@@ -321,8 +321,41 @@ public enum ExtraBeesEffect implements IAlleleBeeEffect {
             case POWER:
                 onPowerEffect(world, x, y, z);
                 break;
+
+            case MACHINE_BOOSTER:
+                doMachineBoosterEffect(genome, storedData, housing);
+                break;
         }
         return null;
+    }
+
+    private void doMachineBoosterEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+        World world = housing.getWorld();
+        ChunkCoordinates coords = housing.getCoordinates();
+        IBeeModifier beeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+
+        // Get random coords within territory
+        int xRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[0]);
+        int yRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[1]);
+        int zRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[2]);
+
+        int xCoord = coords.posX + world.rand.nextInt(xRange) - xRange / 2;
+        int yCoord = coords.posY + world.rand.nextInt(yRange) - yRange / 2;
+        int zCoord = coords.posZ + world.rand.nextInt(zRange) - zRange / 2;
+
+        // If gt machine of tier lower equal than ev, boost recipe by 2s
+        TileEntity tileEntity = world.getTileEntity(xCoord, yCoord, zCoord);
+        if (tileEntity instanceof BaseMetaTileEntity) {
+            BaseMetaTileEntity machine = (BaseMetaTileEntity) tileEntity;
+            if (machine.getMetaTileEntity() instanceof MTETieredMachineBlock) {
+                MTETieredMachineBlock tieredMachine = (MTETieredMachineBlock) machine.getMetaTileEntity();
+                if (tieredMachine.mTier <= 4) { // EV
+                    if (machine.isActive() && machine.getMaxProgress() > 60) {
+                        machine.increaseProgress(40);
+                    }
+                }
+            }
+        }
     }
 
     private void onLightingEffect(World world, int x, int y, int z) {

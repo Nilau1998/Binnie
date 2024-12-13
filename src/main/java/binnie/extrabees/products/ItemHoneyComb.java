@@ -229,6 +229,11 @@ public class ItemHoneyComb extends ItemProduct {
 
         EnumHoneyComb.BLUTONIUM.copyProducts(EnumHoneyComb.STONE);
         EnumHoneyComb.BLUTONIUM.tryAddProduct(ExtraBeeItems.BlutoniumDust, 0.25f);
+        EnumHoneyComb.DIDDY.addProduct(honeyDrop, 0.4f);
+        EnumHoneyComb.DIDDY.tryAddProduct(beeswax, 0.4f);
+        EnumHoneyComb.DIDDY.tryAddProduct(Mods.forestry.stack("royalJelly"), 0.4f);
+        EnumHoneyComb.DIDDY.tryAddProduct(Mods.forestry.stack("pollen"), 0.4f);
+        EnumHoneyComb.DIDDY.tryAddProduct(EnumHoneyDrop.SEED, 0.4f);
         OreDictionary.registerOre("beeComb", new ItemStack(ExtraBees.comb, 1, 32767));
 
         for (int i = 0; i < 16; ++i) {

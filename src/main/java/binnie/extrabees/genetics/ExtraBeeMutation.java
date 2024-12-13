@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import binnie.extrabees.genetics.requirements.ActiveGTMachineMutationCondition;
 import binnie.extrabees.genetics.requirements.DummyMutationCondition;
 import binnie.extrabees.genetics.requirements.IMutationRequirement;
 import binnie.extrabees.genetics.requirements.RequirementPerson;
@@ -52,5 +53,9 @@ public class ExtraBeeMutation extends BeeMutation implements IBeeMutationCustom 
             descriptions.remove(i);
             descriptions.addAll(Arrays.asList(description.split("/n")));
         }
+    }
+
+    public void activeGTMachine() {
+        addMutationCondition(new ActiveGTMachineMutationCondition());
     }
 }

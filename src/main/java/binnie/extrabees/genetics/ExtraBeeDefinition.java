@@ -1717,6 +1717,42 @@ public enum ExtraBeeDefinition implements IBeeDefinition {
         }
     },
 
+    DIDDY(ExtraBeeBranchDefinition.ENERGETIC, "Diddy", true, new Color(85, 37, 130), new Color(253, 185, 39)) {
+
+        @Override
+        protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
+            beeSpecies.addProduct(EnumHoneyComb.DIDDY.get(1), 0.2f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }
+
+        @Override
+        protected void registerMutations() {
+            registerMutation(BeeDefinition.IMPERIAL, BeeDefinition.INDUSTRIOUS, 1).activeGTMachine();
+        }
+
+        @Override
+        protected void setAlleles(IAllele[] template) {
+            AlleleHelper.instance.set(template, EnumBeeChromosome.FERTILITY, EnumAllele.Fertility.MAXIMUM);
+            AlleleHelper.instance
+                    .set(template, EnumBeeChromosome.SPEED, AlleleHelper.getAllele(ExtraBeesSpeed.ASCENDED.getUID()));
+            AlleleHelper.instance
+                    .set(template, EnumBeeChromosome.LIFESPAN, AlleleHelper.getAllele(ExtraBeesLife.IMMORTAL.getUID()));
+            AlleleHelper.instance.set(template, EnumBeeChromosome.TEMPERATURE_TOLERANCE, EnumAllele.Tolerance.BOTH_2);
+            AlleleHelper.instance.set(
+                    template,
+                    EnumBeeChromosome.FLOWER_PROVIDER,
+                    AlleleHelper.getAllele(ExtraBeesFlowers.FIRE.getUID()));
+            AlleleHelper.instance.set(template, EnumBeeChromosome.NOCTURNAL, true);
+            AlleleHelper.instance.set(template, EnumBeeChromosome.TERRITORY, EnumAllele.Territory.AVERAGE);
+            AlleleHelper.instance.set(
+                    template,
+                    EnumBeeChromosome.EFFECT,
+                    AlleleHelper.getAllele(ExtraBeesEffect.MACHINE_BOOSTER.getUID()));
+        }
+    },
+
     /* AUSTERE BRANCH */
     HAZARDOUS(BeeBranchDefinition.AUSTERE, "infensus", true, new Color(0xb06c28), new Color(0xffdc16)) {
 
